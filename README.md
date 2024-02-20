@@ -15,7 +15,7 @@
 
 ### 2. Modify the change function to create the album table
 ```elixir
-# ./priv/repo/migrations/20240220043106_add_albums_table.exs
+# priv/repo/migrations/20240220043106_add_albums_table.exs
 
 defmodule EctoStarter.Repo.Migrations.AddAlbumsTable do
   use Ecto.Migration
@@ -63,7 +63,7 @@ After this step is successful rerun step 3 to add the table back. We just want t
 
 ### 5. Add album schema
 ```elixir
-# ./lib/ecto_starter/album.ex
+# lib/ecto_starter/album.ex
 
 defmodule EctoStarter.Album do
   use Ecto.Schema
@@ -78,8 +78,10 @@ defmodule EctoStarter.Album do
 end
 ```
 
-### 6. Update ./lib/ecto_starter/artist.ex
+### 6. Update artist schema
 ```elixir
+# lib/ecto_starter/artist.ex
+
 defmodule EctoStarter.Artist do
   use Ecto.Schema
   alias EctoStarter.Album
@@ -96,8 +98,10 @@ end
 ```
 
 
-### 7. Update ./priv/repo/seeds.exs
+### 7. Update seeds file
 ```elixir
+# priv/repo/seeds.exs
+
 alias EctoStarter.{Repo, Artist, Album}
 
 Repo.insert! %Artist{
@@ -127,7 +131,7 @@ IO.puts "Success! Sample data has been added."
 
 ### 8. Update mix.exs to add aliases to ease ecto usage
 ```elixir
-# ./mix.exs
+# mix.exs
 ...
 
 def project do
