@@ -77,3 +77,14 @@ defmodule EctoStarter.Artist do
   end
 end
 ```
+
+### 6. Add an .iex.exs file to make testing with IEx easier
+
+```elixir
+# ./.iex.exs
+
+alias EctoStarter.{Repo, Artist}
+
+import_if_available Ecto.Query
+```
+
