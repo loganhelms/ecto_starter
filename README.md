@@ -5,72 +5,59 @@
 * Erlang: 26.2.2+
 * Postgres: 14.10+
 
-## Connecting to a Database
+## Creating a table and schema
 
-### 1. Create a new project
+### 1. Generate a new migration to add a table 
 ```bash
-> mix new ecto_starter --sup
+> mix ecto.gen.migration add_artists_table
+Generated ecto_starter app
+* creating priv/repo/migrations/20240220021453_add_artists_table.exs
 ```
 
-### 2. Add Ecto dependencies
+### 2. Modify the change function to create the table
 ```elixir
-# ./mix.exs
+# ./priv/repo/migrations/20240220021453_add_artists_table.exs
 
-defp deps do
-    [
-      {:postgrex, ">= 0.0.0"},
-      {:ecto_sql, "~> 3.11.1"}
-    ]
+defmodule EctoStarter.Repo.Migrations.AddArtistsTable do
+  use Ecto.Migration
+
+  def change do
+    create table(:artists) do
+      add :name, :string, null: false
+      add :birth_date, :date, null: true
+      add :death_date, :date, null: true
+      timestamps()
+    end
+
+    create index(:artists, :name)
   end
-```
-
-### 3. Create Repo module
-```elixir
-# ./lib/ecto_draft/repo.ex
-
-defmodule EctoStarter.Repo do
-  use Ecto.Repo,
-  otp_app: :ecto_starter,
-  adapter: Ecto.Adapters.Postgres
 end
 ```
 
-### 4. Add config
-```elixir
-# ./config/config.exs
-
-config :ecto_starter, EctoStarter.Repo,
-  database: "ecto_starter",
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost"
-
-config :ecto_starter, :ecto_repos, [EctoStarter.Repo]
-```
-
-### 5. Add Ecto to the supervision tree
-```elixir
-# ./lib/ecto_starter/application.ex
-
-@impl true
-def start(_type, _args) do
-  children = [
-    EctoStarter.Repo
-  ]
-
-  opts = [strategy: :one_for_one, name: EctoStarter.Supervisor]
-  Supervisor.start_link(children, opts)
-end
-```
-
-### 6. Fetch dependencies and compile application
+### 3. Run the migration to create the table
 ```bash
-> mix do deps.get, compile
-Running dependency resolution...
+> mix ecto.migrate
+
+21:27:34.300 [info] == Running 20240220021453 EctoStarter.Repo.Migrations.AddArtistsTable.change/0 forward
+
+21:27:34.301 [info] create table artists
+
+21:27:34.365 [info] create index artists_name_index
+
+21:27:34.371 [info] == Migrated 20240220021453 in 0.0s
 ```
 
-### 7. Create the database
+### 4. Run the rollback to ensure that the migration can be reverted
 ```bash
-> mix ecto.create
-The database for EctoStarter.Repo has been created
+> mix ecto.rollback
+
+21:28:09.036 [info] == Running 20240220021453 EctoStarter.Repo.Migrations.AddArtistsTable.change/0 backward
+
+21:28:09.038 [info] drop index artists_name_index
+
+21:28:09.041 [info] drop table artists
+
+21:28:09.056 [info] == Migrated 20240220021453 in 0.0s
 ```
+
+After this step is successful rerun step 3 to add the table back. We just want to test the rollback functionality of the migration.
