@@ -16,7 +16,7 @@ Generated ecto_starter app
 
 ### 2. Modify the change function to create the table
 ```elixir
-# ./priv/repo/migrations/20240220021453_add_artists_table.exs
+# priv/repo/migrations/20240220021453_add_artists_table.exs
 
 defmodule EctoStarter.Repo.Migrations.AddArtistsTable do
   use Ecto.Migration
@@ -64,7 +64,7 @@ After this step is successful rerun step 3 to add the table back. We just want t
 
 ### 5. Add artist schema
 ```elixir
-# ./lib/ecto_starter/artist.ex
+# lib/ecto_starter/artist.ex
 
 defmodule EctoStarter.Artist do
   use Ecto.Schema
@@ -81,7 +81,7 @@ end
 ### 6. Add an .iex.exs file to make testing with IEx easier
 
 ```elixir
-# ./.iex.exs
+# .iex.exs
 
 alias EctoStarter.{Repo, Artist}
 
@@ -170,7 +170,9 @@ SELECT count(a0."id") FROM "artists" AS a0 []
 3
 ```
 
-### 11. Test all repository pattern operations
+### 11. Test CRUD operations
+
+#### Insert
 ```elixir
 iex(3)> Repo.insert(%Artist{name: "Dizzy Gillespie"})
 
@@ -186,6 +188,9 @@ INSERT INTO "artists" ("name","inserted_at","updated_at") VALUES ($1,$2,$3) RETU
    inserted_at: ~N[2024-02-20 03:50:55],
    updated_at: ~N[2024-02-20 03:50:55]
  }}
+ ```
+ #### Get
+ ```elixir
 iex(4)> dizzy = Repo.get_by(Artist, name: "Dizzy Gillespie")
 
 22:51:29.267 [debug] QUERY OK source="artists" db=1.5ms queue=48.4ms idle=700.2ms
@@ -199,6 +204,9 @@ SELECT a0."id", a0."name", a0."birth_date", a0."death_date", a0."inserted_at", a
   inserted_at: ~N[2024-02-20 03:50:55],
   updated_at: ~N[2024-02-20 03:50:55]
 }
+```
+#### Update
+```elixir
 iex(5)> Repo.update(Ecto.Changeset.change(dizzy, name: "John Birks Gillespie"))
 
 22:52:08.624 [debug] QUERY OK source="artists" db=2.8ms queue=8.2ms idle=96.8ms
@@ -226,6 +234,9 @@ SELECT a0."id", a0."name", a0."birth_date", a0."death_date", a0."inserted_at", a
   inserted_at: ~N[2024-02-20 03:50:55],
   updated_at: ~N[2024-02-20 03:52:08]
 }
+```
+#### Delete
+```elixir
 iex(7)> Repo.delete(dizzy)
 
 22:52:42.741 [debug] QUERY OK source="artists" db=6.3ms queue=0.8ms idle=1217.6ms
