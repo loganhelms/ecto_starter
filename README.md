@@ -61,3 +61,19 @@ end
 ```
 
 After this step is successful rerun step 3 to add the table back. We just want to test the rollback functionality of the migration.
+
+### 5. Add artist schema
+```elixir
+# ./lib/ecto_starter/artist.ex
+
+defmodule EctoStarter.Artist do
+  use Ecto.Schema
+
+  schema "artists" do
+    field(:name)
+    field(:birth_date, :date)
+    field(:death_date, :date)
+    timestamps()
+  end
+end
+```
