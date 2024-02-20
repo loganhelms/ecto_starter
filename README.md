@@ -5,7 +5,7 @@
 * Erlang: 26.2.2+
 * Postgres: 14.10+
 
-## Connecting to a Database
+## Creating a relational database-backed application
 
 ### 1. Create a new project
 ```bash
