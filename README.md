@@ -60,3 +60,67 @@ end
 ```
 
 After this step is successful rerun step 3 to add the table back. We just want to test the rollback functionality of the migration.
+
+### 5. Add album schema
+```elixir
+# ./lib/ecto_starter/album.ex
+
+defmodule EctoStarter.Album do
+  use Ecto.Schema
+  alias EctoStarter.Artist
+
+  schema "albums" do
+    field(:title, :string)
+    timestamps()
+
+    belongs_to(:artist, Artist)
+  end
+end
+```
+
+### 6. Update ./lib/ecto_starter/artist.ex
+```elixir
+defmodule EctoStarter.Artist do
+  use Ecto.Schema
+  alias EctoStarter.Album
+
+  schema "artists" do
+    field(:name)
+    field(:birth_date, :date)
+    field(:death_date, :date)
+    timestamps()
+
+    has_many(:albums, Album)
+  end
+end
+```
+
+
+### 7. Update ./priv/repo/seeds.exs
+```elixir
+alias EctoStarter.{Repo, Artist, Album}
+
+Repo.insert! %Artist{
+  name: "Miles Davis",
+  albums: [
+    %Album{title: "Kind Of Blue"},
+    %Album{title: "Cookin' At The Plugged Nickel"}
+  ]}
+
+Repo.insert! %Artist{
+  name: "Bill Evans",
+  albums: [
+    %Album{title: "You Must Believe In Spring"},
+    %Album{title: "Portrait In Jazz"}
+  ]}
+
+Repo.insert! %Artist{
+  name: "Bobby Hutcherson",
+  albums: [
+    %Album{title: "Live At Montreaux"}
+  ]}
+
+
+IO.puts ""
+IO.puts "Success! Sample data has been added."
+```
