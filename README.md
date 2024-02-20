@@ -215,3 +215,27 @@ INSERT INTO "albums" ("title","artist_id","inserted_at","updated_at") VALUES ($1
 commit []
 Success! Sample data has been added.
 ```
+
+### 10. Open an IEx session, and try a query
+```elixir
+> iex -S mix
+Erlang/OTP 26 [erts-14.2.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1]
+
+Interactive Elixir (1.16.1) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> query = from ar in "artists",
+...(1)> join: al in "albums", on: ar.id == al.artist_id,
+...(1)> select: %{artist: ar.name, album: al.title}
+#Ecto.Query<from a0 in "artists", join: a1 in "albums",
+ on: a0.id == a1.artist_id, select: %{artist: a0.name, album: a1.title}>
+iex(2)> Repo.all(query)
+
+17:25:45.011 [debug] QUERY OK source="artists" db=4.4ms decode=1.4ms queue=44.8ms idle=746.4ms
+SELECT a0."name", a1."title" FROM "artists" AS a0 INNER JOIN "albums" AS a1 ON a0."id" = a1."artist_id" []
+[
+  %{artist: "Miles Davis", album: "Kind Of Blue"},
+  %{artist: "Miles Davis", album: "Cookin' At The Plugged Nickel"},
+  %{artist: "Bill Evans", album: "You Must Believe In Spring"},
+  %{artist: "Bill Evans", album: "Portrait In Jazz"},
+  %{artist: "Bobby Hutcherson", album: "Live At Montreaux"}
+]
+```
