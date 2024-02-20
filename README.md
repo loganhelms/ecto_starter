@@ -14,7 +14,7 @@
 
 ### 2. Add Ecto dependencies
 ```elixir
-# ./mix.exs
+# mix.exs
 
 defp deps do
     [
@@ -26,7 +26,7 @@ defp deps do
 
 ### 3. Create Repo module
 ```elixir
-# ./lib/ecto_draft/repo.ex
+# lib/ecto_draft/repo.ex
 
 defmodule EctoStarter.Repo do
   use Ecto.Repo,
@@ -37,7 +37,7 @@ end
 
 ### 4. Add config
 ```elixir
-# ./config/config.exs
+# config/config.exs
 
 config :ecto_starter, EctoStarter.Repo,
   database: "ecto_starter",
@@ -50,7 +50,7 @@ config :ecto_starter, :ecto_repos, [EctoStarter.Repo]
 
 ### 5. Add Ecto to the supervision tree
 ```elixir
-# ./lib/ecto_starter/application.ex
+# lib/ecto_starter/application.ex
 
 @impl true
 def start(_type, _args) do
